@@ -1,0 +1,19 @@
+{
+  "name": "gitase",
+  "version": "0.0.1",
+  "description": "A tool to merge branches to master with one commit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sullof/gitase.git"
+  },
+  "author": "Francesco Sullo <francesco@sullo.co>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sullof/gitase/issues"
+  },
+  "homepage": "https://github.com/sullof/gitase#readme"
+}
