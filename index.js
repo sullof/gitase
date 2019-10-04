@@ -2,7 +2,7 @@ const fs = require('fs-extra')
 const path = require('path')
 const homedir = require('homedir')
 const {execSync, spawn} = require('child_process')
-const {version} = require('package')
+const {version} = require('./package')
 
 const program = require('commander')
 program
