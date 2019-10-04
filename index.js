@@ -3,8 +3,8 @@ const path = require('path')
 const homedir = require('homedir')
 const {execSync, spawn} = require('child_process')
 const {version} = require('./package')
-
 const program = require('commander')
+
 program
     .version(version)
     .option('-d, --destination [master branch]', 'the destination branch if not master')
@@ -44,7 +44,7 @@ async function execAndShow(cmd, params) {
 let errors = {
   notARepo: 'The current folder does not look like it is in a git repo',
   notClean: 'The repo has changes that must be committed before running gitase',
-  notOn: `You cannot run OneCommit on `
+  notOn: `You cannot run onecommit on `
 }
 
 try {
@@ -87,10 +87,13 @@ try {
   }
 
   fs.emptyDirSync(workingDir)
+  process.exit(0)
 
 } catch (e) {
+
   console.error(e.message)
-  process.exit()
+  process.exit(0)
+
 }
 
 
