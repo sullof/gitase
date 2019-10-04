@@ -2,10 +2,11 @@ const fs = require('fs-extra')
 const path = require('path')
 const homedir = require('homedir')
 const {execSync, spawn} = require('child_process')
+const {version} = require('package')
 
 const program = require('commander')
 program
-    .version('0.1.0')
+    .version(version)
     .option('-d, --destination [master branch]', 'the destination branch if not master')
     .option('-n, --new-branch [new branch]', 'the new branch where to put the changes')
     .parse(process.argv)
@@ -43,7 +44,7 @@ async function execAndShow(cmd, params) {
 let errors = {
   notARepo: 'The current folder does not look like it is in a git repo',
   notClean: 'The repo has changes that must be committed before running gitase',
-  notOn: 'You cannot run gitase on '
+  notOn: `You cannot run OneCommit on `
 }
 
 try {
