@@ -67,7 +67,6 @@ try {
   }
 
   let pwd = exec('pwd')[0]
-
   const workingDir = path.join(homedir(),'.gitase', pwd.replace(/\//g,'__'))
   fs.emptyDirSync(workingDir)
 
