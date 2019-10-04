@@ -1,4 +1,2 @@
 #!/usr/bin/env node
-
-process.env.DEV_MODE = '0'
-require('../src')
+require('..')
