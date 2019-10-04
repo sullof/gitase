@@ -67,7 +67,6 @@ try {
   }
 
   let pwd = exec('pwd')[0]
-
   const workingDir = path.join(homedir(),'.gitase', pwd.replace(/\//g,'__'))
   fs.emptyDirSync(workingDir)
 
@@ -78,12 +77,15 @@ try {
   exec('git checkout master')
 
   for (let file of diff) {
+    fs.ensureDirSync(path.dirname(`${pwd}/${file}`))
     exec(`cp ${workingDir}/${file.replace(/\//g,'__')} ${pwd}/${file}`)
   }
 
   if (program.newBranch) {
     exec(`git checkout -b ${program.newBranch}`)
   }
+
+  fs.emptyDirSync(workingDir)
 
 } catch (e) {
   console.error(e.message)
