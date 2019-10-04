@@ -1,24 +1,27 @@
 {
-  "name": "gitase",
+  "name": "onecommit",
   "version": "0.0.1",
-  "description": "A tool to merge branches to master with one commit",
+  "description": "A cli tool to create new branches with just one commit",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sullof/gitase.git"
+    "url": "git+https://github.com/sullof/onecommit.git"
   },
   "author": "Francesco Sullo <francesco@sullo.co>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sullof/gitase/issues"
+    "url": "https://github.com/sullof/onecommit/issues"
   },
-  "homepage": "https://github.com/sullof/gitase#readme",
+  "homepage": "https://github.com/sullof/onecommit#readme",
   "dependencies": {
     "commander": "^3.0.2",
     "fs-extra": "^8.1.0",
     "homedir": "^0.6.0"
+  },
+  "bin": {
+    "onecommit": "cli/onecommit"
   }
 }
