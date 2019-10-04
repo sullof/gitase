@@ -6,10 +6,11 @@ const {execSync, spawn} = require('child_process')
 const program = require('commander')
 program
     .version('0.1.0')
-    .option('-d, --destination-repo [destinationRepo]', 'The destination repo if not master')
+    .option('-d, --destination [master branch]', 'the destination branch if not master')
+    .option('-n, --new-branch [new branch]', 'the new branch where to put the changes')
     .parse(process.argv)
 
-const dest = program.destinationRepo || 'master'
+const dest = program.destination || 'master'
 
 function exec(cmd) {
   try {
@@ -39,10 +40,6 @@ async function execAndShow(cmd, params) {
   })
 }
 
-function getWorkingDir(repo) {
-  // const workingDir = path.resolve('
-}
-
 let errors = {
   notARepo: 'The current folder does not look like it is in a git repo',
   notClean: 'The repo has changes that must be committed before running gitase',
@@ -55,7 +52,7 @@ try {
   if (branch.split(' ').length !== 1) {
     throw new Error(errors.notARepo)
   }
-  let status = exec('git status -s')
+  let status = exec('git status -s')[0]
   if (status) {
     throw new Error(errors.notClean)
   }
@@ -69,12 +66,24 @@ try {
     throw new Error(`There are no differences between ${branch} and ${dest}`)
   }
 
-  let pwd = exec('pwd')
+  let pwd = exec('pwd')[0]
 
-  // let workingDir = getWorkingDir()
+  const workingDir = path.join(homedir(),'.gitase', pwd.replace(/\//g,'__'))
+  fs.emptyDirSync(workingDir)
 
-  console.log(pwd)
+  for (let file of diff) {
+    exec(`cp ${pwd}/${file} ${workingDir}/${file.replace(/\//g,'__')}`)
+  }
 
+  exec('git checkout master')
+
+  for (let file of diff) {
+    exec(`cp ${workingDir}/${file.replace(/\//g,'__')} ${pwd}/${file}`)
+  }
+
+  if (program.newBranch) {
+    exec(`git checkout -b ${program.newBranch}`)
+  }
 
 } catch (e) {
   console.error(e.message)
