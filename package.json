@@ -1,6 +1,6 @@
 {
   "name": "onecommit",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A cli tool to create new branches with just one commit",
   "main": "index.js",
   "scripts": {
