@@ -22,17 +22,11 @@ function exec(cmd) {
   }
 }
 
-let errors = {
-  notARepo: 'The current folder does not look like it is in a git repo',
-  notClean: 'The repo has changes that must be committed before running gitase',
-  notOn: `You cannot run onecommit on `
-}
-
 try {
 
   let branch = exec('git rev-parse --abbrev-ref HEAD')[0]
   if (branch.split(' ').length !== 1) {
-    throw new Error(errors.notARepo)
+    throw new Error('The current folder does not look like it is in a git repo')
   }
   let status = exec('git status -s')[0]
   if (status) {
@@ -40,11 +34,11 @@ try {
       exec('git add -A')
       exec(`git commit -m "${program.commit === true ? `Random message #${Math.random().toString().substring(2)}` : program.commit}"`)
     } else {
-      throw new Error(errors.notClean)
+      throw new Error('The repo has changes that must be committed before running onecommit')
     }
   }
   if (branch === dest) {
-    throw new Error(errors.notOn + dest)
+    throw new Error(`You cannot run onecommit on ${dest}`)
   }
 
   let diff = exec(`git diff ${dest} --name-only`)
@@ -73,13 +67,13 @@ try {
   }
 
   fs.emptyDirSync(workingDir)
-  process.exit(0)
 
 } catch (e) {
 
   console.error(e.message)
-  process.exit(0)
 
 }
+
+process.exit(0)
 
 
