@@ -1,7 +1,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 const homedir = require('homedir')
-const {execSync, spawn} = require('child_process')
+const {execSync} = require('child_process')
 const {version} = require('./package')
 const program = require('commander')
 
@@ -9,6 +9,7 @@ program
     .version(version)
     .option('-d, --destination [master branch]', 'the destination branch if not master')
     .option('-n, --new-branch [new branch]', 'the new branch where to put the changes')
+    .option('-c, --commit [message]', 'force commit of current branch')
     .parse(process.argv)
 
 const dest = program.destination || 'master'
@@ -19,26 +20,6 @@ function exec(cmd) {
   } catch (err) {
     return []
   }
-}
-
-async function execAndShow(cmd, params) {
-  return new Promise(resolve => {
-    let result = ''
-    const build = spawn(cmd, params)
-
-    build.stdout.on('data', function (data) {
-      result += data.toString()
-      process.stdout.write(data.toString())
-    })
-
-    build.stderr.on('data', function (data) {
-      process.stdout.write(data.toString())
-    })
-
-    build.on('exit', function () {
-      resolve(result)
-    })
-  })
 }
 
 let errors = {
@@ -55,7 +36,12 @@ try {
   }
   let status = exec('git status -s')[0]
   if (status) {
-    throw new Error(errors.notClean)
+    if (program.commit) {
+      exec('git add -A')
+      exec(`git commit -m "${program.commit === true ? `Random message #${Math.random().toString().substring(2)}` : program.commit}"`)
+    } else {
+      throw new Error(errors.notClean)
+    }
   }
   if (branch === dest) {
     throw new Error(errors.notOn + dest)
@@ -68,18 +54,18 @@ try {
   }
 
   let pwd = exec('pwd')[0]
-  const workingDir = path.join(homedir(),'.gitase', pwd.replace(/\//g,'__'))
+  const workingDir = path.join(homedir(), '.gitase', pwd.replace(/\//g, '__'))
   fs.emptyDirSync(workingDir)
 
   for (let file of diff) {
-    exec(`cp ${pwd}/${file} ${workingDir}/${file.replace(/\//g,'__')}`)
+    exec(`cp ${pwd}/${file} ${workingDir}/${file.replace(/\//g, '__')}`)
   }
 
   exec('git checkout master')
 
   for (let file of diff) {
     fs.ensureDirSync(path.dirname(`${pwd}/${file}`))
-    exec(`cp ${workingDir}/${file.replace(/\//g,'__')} ${pwd}/${file}`)
+    exec(`cp ${workingDir}/${file.replace(/\//g, '__')} ${pwd}/${file}`)
   }
 
   if (program.newBranch) {

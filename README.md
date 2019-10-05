@@ -39,6 +39,11 @@ Use `develop` and create the new branch `version2` after the restore:
 onecommit -d develop -n version2
 ```
 
+Commits the current changes before proceeding if not committed yet:
+```
+onecommit -c
+```
+
 In general, execute `onecommit -h` to get an help.
 
 
