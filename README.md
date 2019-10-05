@@ -46,6 +46,13 @@ onecommit -c
 
 In general, execute `onecommit -h` to get an help.
 
+# Updates
+
+To update onecommit just run
+```
+onecommit -u
+```
+
 
 # Next steps (maybe)
 

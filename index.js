@@ -10,7 +10,17 @@ program
     .option('-d, --destination [master branch]', 'the destination branch if not master')
     .option('-n, --new-branch [new branch]', 'the new branch where to put the changes')
     .option('-c, --commit [message]', 'force commit of current branch')
+    .option('-u, --update', 'updates onecommit to latest version')
     .parse(process.argv)
+
+
+if (program.update) {
+
+  let up = exec('npm i -g onecommit@latest')
+  console.log(up.join('\n'))
+  process.exit(0)
+
+}
 
 const dest = program.destination || 'master'
 
