@@ -58,7 +58,7 @@ try {
   }
 
   let pwd = exec('pwd')[0]
-  const workingDir = path.join(homedir(), '.gitase', pwd.replace(/\//g, '__'))
+  const workingDir = path.join(homedir(), '.onecommit', pwd.replace(/\//g, '__'))
   fs.emptyDirSync(workingDir)
 
   for (let file of diff) {
