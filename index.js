@@ -61,13 +61,25 @@ try {
   const workingDir = path.join(homedir(), '.onecommit', pwd.replace(/\//g, '__'))
   fs.emptyDirSync(workingDir)
 
+  let deleted = []
+  let modified = []
+
   for (let file of diff) {
-    exec(`cp ${pwd}/${file} ${workingDir}/${file.replace(/\//g, '__')}`)
+    if (fs.existsSync(`${pwd}/${file}`)) {
+      exec(`cp ${pwd}/${file} ${workingDir}/${file.replace(/\//g, '__')}`)
+      modified.push(file)
+    } else {
+      deleted.push(file)
+    }
   }
 
   exec('git checkout master')
 
-  for (let file of diff) {
+  for (let file of deleted) {
+    exec(`rm ${pwd}/${file}`)
+  }
+
+  for (let file of modified) {
     fs.ensureDirSync(path.dirname(`${pwd}/${file}`))
     exec(`cp ${workingDir}/${file.replace(/\//g, '__')} ${pwd}/${file}`)
   }
