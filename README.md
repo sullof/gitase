@@ -1,6 +1,8 @@
 # OneCommit
 A cli tool to create new branches with just one commit
 
+__NOTICE: Versions before 0.0.12 are deprecated because there was a critical issue with deleted files.__
+
 Sometimes you can neither create well organized branches nor rebase your code appropriately. 
 
 For example, let's say that you have an error in production that is not replicable otherwhere. Most likely, you will create a lot of commits that you have to push in order to pull the changes where you are debugging your code.
